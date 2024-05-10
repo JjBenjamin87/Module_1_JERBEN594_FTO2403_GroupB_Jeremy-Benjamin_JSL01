@@ -1,12 +1,29 @@
 function validateSyntax() {
-    let input = document.getElementById('petInput').value;
-    // Validation logic goes here
-    let result = ''; // Placeholder for validation result
+  const input = document.getElementById("petInput").value.trim().toLowerCase();
+  let result = "";
 
-    // TODO: Write your validation logic here
-        // Check if input starts with 'pet_' and followed by alphanumeric characters
+  if (input === "") {
+    result = "Error: Input Field Empty";
+  } else {
+    const isValidFormat = checkFormat(input);
+    const isValidBirthYear = checkBirthYear(input);
+    const hasName = checkName(input);
 
-            document.getElementById('result').innerText = result;
+    result = isValidFormat && isValidBirthYear && hasName ? "Valid Syntax" : "Invalid Syntax";
+  }
+
+  document.getElementById("result").innerText = result;
 }
 
+function checkFormat(input) {
+  return input.startsWith("pet_") && /^[a-zA-Z0-9_]+$/.test(input.slice(4));
+}
 
+function checkBirthYear(input) {
+  const petBirthYear = parseInt(input.slice(4, 8), 10);
+  return petBirthYear >= 1900 && petBirthYear <= 2024;
+}
+
+function checkName(input) {
+  return input.slice(8).trim().length > 0;
+}
